@@ -46,6 +46,7 @@ def encryptZipfileLocal(zipfile, backupname, dest):
     with open(zipfile, "rb") as fIn:
         with open(finaldest, "wb") as fOut:
             pyAesCrypt.encryptStream(fIn, fOut, password, bufferSize)
+    print("Backup taken on {}".format(datetime.now()))
     os.remove(zipfile)
 
 
