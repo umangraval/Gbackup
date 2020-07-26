@@ -9,7 +9,7 @@ from os import stat, remove
 import keyring
 
 now = datetime.now()
-filename = now.strftime("%m-%d-%Y")
+filename = now.strftime("%d-%m-%Y")
 zipfile = filename
 # print("date and time:",filename)	
 
@@ -21,7 +21,7 @@ with ZipFile(filename, 'w') as zipObj:
            #create complete filepath of file in directory
            filePath = os.path.join(folderName, filename)
            # Add file to zip
-           zipObj.write(filePath, basename(filePath))
+           zipObj.write(filePath)
 
 # encryption/decryption buffer size - 64K
 bufferSize = 64 * 1024

@@ -10,33 +10,33 @@ filename = now.strftime("%m-%d-%Y")
 zipfile = filename
 # print("date and time:",filename)	
 
+
 # create a ZipFile object
 with ZipFile(filename, 'w') as zipObj:
    # Iterate over all the files in directory
    for folderName, subfolders, filenames in os.walk("lab1"):
-       print(folderName, subfolders, filenames)
-       for foldername in subfolders:
-           #create complete filepath of file in directory
-           filePath = os.path.join(folderName, foldername)
-           # Add file to zip
-           zipObj.write(filePath, basename(filePath))
+#        print(folderName, subfolders, filenames)
+#        for foldername in subfolders:
+#            #create complete filepath of file in directory
+#            filePath = os.path.join(folderName, foldername)
+#            # Add file to zip
+#            zipObj.write(filePath, basename(filePath))
 
-       for filename in filenames:
+       for file in filenames:
            #create complete filepath of file in directory
-           filePath = os.path.join(folderName, filename)
-           print(filePath)
+           filePath = os.path.join(folderName, file)
            # Add file to zip
-           zipObj.write(filePath, basename(filePath))
+           zipObj.write(filePath)
 
 # encryption/decryption buffer size - 64K
-# bufferSize = 64 * 1024
-# password = "foopassword"
+bufferSize = 64 * 1024
+password = "password"
 
-# backupname="backup-"+zipfile
+backupname="backup-"+zipfile
 
-# # encrypt
-# with open(zipfile, "rb") as fIn:
-#     with open(backupname, "wb") as fOut:
-#         pyAesCrypt.encryptStream(fIn, fOut, password, bufferSize)
+# encrypt
+with open(zipfile, "rb") as fIn:
+    with open(backupname, "wb") as fOut:
+        pyAesCrypt.encryptStream(fIn, fOut, password, bufferSize)
 
-# os.remove(zipfile)
+os.remove(zipfile)

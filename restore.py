@@ -35,7 +35,8 @@ for file1 in file_list:
 
 file_list = drive.ListFile({'q': "'{}' in parents and trashed=false".format(folderid)}).GetList()
 
-filename = "backup-"+sys.argv[1]
+restore_date = input("Enter date of backup in dd-mm-yyyy: ")
+filename = "backup-"+restore_date
 
 for i, file1 in enumerate(sorted(file_list, key = lambda x: x['title']), start=1):
     if (file1['title'] == filename):
@@ -43,18 +44,21 @@ for i, file1 in enumerate(sorted(file_list, key = lambda x: x['title']), start=1
         file1.GetContentFile(file1['title'])
 
 # get encrypted file size
-encFileSize = stat(filename).st_size
+try:
+    encFileSize = stat(filename).st_size
 
-restorefilename = "restore-"+filename
-# decrypt
-with open(filename, "rb") as fIn:
-    try:
-        with open(restorefilename, "wb") as fOut:
-            # decrypt file stream
-            pyAesCrypt.decryptStream(fIn, fOut, password, bufferSize, encFileSize)
+    restorefilename = "./backup-restore/restore-"+filename
+    # decrypt
+    with open(filename, "rb") as fIn:
+        try:
+            with open(restorefilename, "wb") as fOut:
+                # decrypt file stream
+                pyAesCrypt.decryptStream(fIn, fOut, password, bufferSize, encFileSize)
+                remove(filename)
+                print("Restored file {} at {}".format(filename, datetime.now()))
+        except ValueError:
+            # remove output file on error
+            print("Corrupted file")
             remove(filename)
-            print("Restored file {} at {}".format(filename, datetime.now()))
-    except ValueError:
-        # remove output file on error
-        print("Corrupted file")
-        remove(filename)
+except:
+    print("backup not found")
